@@ -30,8 +30,25 @@ export class ProductsController {
     allowEmptyValue: true,
     type: String,
   })
+  @ApiParam({
+    name: 'priceRange',
+    description: 'Price range',
+    allowEmptyValue: true,
+    type: String,
+  })
+  @ApiParam({
+    name: 'available',
+    description: 'Available products',
+    allowEmptyValue: true,
+    type: String,
+  })
   async getAllProducts(@Query() query) {
-    return this.productsService.getAllProducts(query.page, query.search);
+    return this.productsService.getAllProducts(
+      query.page,
+      query.search,
+      query.priceRange,
+      query.available,
+    );
   }
 
   @Get(':id')

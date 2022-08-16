@@ -7,7 +7,12 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAllProducts(page: number, search: string) {
+  async getAllProducts(
+    page: number,
+    search: string,
+    priceRange: string,
+    available: string,
+  ) {
     function paginate(data: any[], page: number) {
       // check if page is undefined
       if (page === undefined) {
@@ -24,10 +29,49 @@ export class ProductsService {
       });
     }
 
-    const data = await this.prisma.product.findMany();
+    function searchByPriceRange(data: any[], range: string) {
+      // switch case for price range with 3 conditions (chp, nrm, xps)
+      switch (range) {
+        case 'chp':
+          return data.filter((item) => {
+            return item.price <= 25;
+          });
+        case 'nrm':
+          return data.filter((item) => {
+            return item.price > 25 && item.price <= 50;
+          });
+        case 'xps':
+          return data.filter((item) => {
+            return item.price > 50;
+          });
+      }
+    }
+
+    function searchByAvailable(data: any[], available: string) {
+      // parse string to boolean
+      const availableBool = available === 'true' ? true : false;
+      if (availableBool) {
+        return data.filter((item) => {
+          return item.stock > 0;
+        });
+      }
+
+      return data.filter((item) => {
+        return item.stock === 0;
+      });
+    }
+
+    let data = await this.prisma.product.findMany();
     if (search) {
-      const result = searchByName(data, search);
-      return paginate(result, page);
+      data = searchByName(data, search);
+    }
+
+    if (priceRange) {
+      data = searchByPriceRange(data, priceRange);
+    }
+
+    if (available) {
+      data = searchByAvailable(data, available);
     }
 
     // paginate data
