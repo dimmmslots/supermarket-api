@@ -7,15 +7,31 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  getAllProducts(page: number) {
-    if (isNaN(page) || !page) {
-      return this.prisma.product.findMany({ take: 20 });
+  async getAllProducts(page: number, search: string) {
+    function paginate(data: any[], page: number) {
+      // check if page is undefined
+      if (page === undefined) {
+        return data.slice(0, 20);
+      }
+      const start = (page - 1) * 20;
+      const end = page * 20;
+      return data.slice(start, end);
     }
 
-    return this.prisma.product.findMany({
-      skip: --page * 20,
-      take: 20,
-    });
+    function searchByName(data: any[], search: string) {
+      return data.filter((item) => {
+        return item.name.toLowerCase().includes(search.toLowerCase());
+      });
+    }
+
+    const data = await this.prisma.product.findMany();
+    if (search) {
+      const result = searchByName(data, search);
+      return paginate(result, page);
+    }
+
+    // paginate data
+    return paginate(data, page);
   }
 
   async getProduct(id: number) {

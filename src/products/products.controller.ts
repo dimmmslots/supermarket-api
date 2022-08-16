@@ -24,8 +24,14 @@ export class ProductsController {
     allowEmptyValue: true,
     type: Number,
   })
+  @ApiParam({
+    name: 'search',
+    description: 'Search query',
+    allowEmptyValue: true,
+    type: String,
+  })
   async getAllProducts(@Query() query) {
-    return this.productsService.getAllProducts(query.page);
+    return this.productsService.getAllProducts(query.page, query.search);
   }
 
   @Get(':id')
