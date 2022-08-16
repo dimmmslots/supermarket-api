@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { uniformResponseDto } from './dto/uniform-response.dto';
 
 @Injectable()
 export class ProductsService {
@@ -12,7 +13,7 @@ export class ProductsService {
     search: string,
     priceRange: string,
     available: string,
-  ) {
+  ): Promise<uniformResponseDto> {
     function paginate(data: any[], page: number) {
       // check if page is undefined
       if (page === undefined) {
@@ -75,10 +76,15 @@ export class ProductsService {
     }
 
     // paginate data
-    return paginate(data, page);
+    // return paginate(data, page);
+    return {
+      message: 'Success',
+      statusCode: 200,
+      data: paginate(data, page),
+    };
   }
 
-  async getProduct(id: number) {
+  async getProduct(id: number): Promise<uniformResponseDto> {
     const parsedId = parseInt(id.toString(), 10);
     const data = await this.prisma.product.findUnique({
       where: { id: parsedId },
@@ -86,9 +92,15 @@ export class ProductsService {
     // check if data is valid
     if (!data) {
       return {
-        error: 'Product not found',
+        message: 'Product not found',
+        statusCode: 404,
+        data: null,
       };
     }
-    return data;
+    return {
+      message: 'Success',
+      statusCode: 200,
+      data: data,
+    };
   }
 }
