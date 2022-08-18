@@ -11,43 +11,48 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ApiParam } from '@nestjs/swagger';
+import { ApiParam, ApiQuery } from '@nestjs/swagger';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  @ApiParam({
+  @ApiQuery({
     name: 'page',
-    description: 'Page number',
     allowEmptyValue: true,
+    description: 'Page number',
     type: Number,
   })
-  @ApiParam({
+  @ApiQuery({
     name: 'search',
-    description: 'Search query',
     allowEmptyValue: true,
+    description: 'Search by name',
     type: String,
   })
-  @ApiParam({
+  @ApiQuery({
     name: 'priceRange',
-    description: 'Price range',
     allowEmptyValue: true,
+    description: 'Search by price range',
     type: String,
   })
-  @ApiParam({
+  @ApiQuery({
     name: 'available',
-    description: 'Available products',
     allowEmptyValue: true,
+    description: 'Search by availability',
     type: String,
   })
-  async getAllProducts(@Query() query) {
+  async getAllProducts(
+    @Query('page') page: number,
+    @Query('search') search: string,
+    @Query('priceRange') priceRange: string,
+    @Query('available') available: string,
+  ) {
     return this.productsService.getAllProducts(
-      query.page,
-      query.search,
-      query.priceRange,
-      query.available,
+      page,
+      search,
+      priceRange,
+      available,
     );
   }
 

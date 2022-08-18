@@ -14,14 +14,29 @@ export class ProductsService {
     priceRange: string,
     available: string,
   ): Promise<uniformResponseDto> {
+    function parseResponseData(data: any) {
+      if (!data) {
+        return false;
+      }
+      const parsedData = data.map((product: any) => {
+        return {
+          name: product.name,
+          price: product.price,
+          available: product.stock ? true : false,
+          url: `http://localhost:3000/products/${product.id}`,
+        };
+      });
+      return parsedData;
+    }
     function paginate(data: any[], page: number) {
       // check if page is undefined
       if (page === undefined) {
-        return data.slice(0, 20);
+        // return data.slice(0, 20);
+        return parseResponseData(data.slice(0, 20));
       }
       const start = (page - 1) * 20;
       const end = page * 20;
-      return data.slice(start, end);
+      return parseResponseData(data.slice(start, end));
     }
 
     function searchByName(data: any[], search: string) {
