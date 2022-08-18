@@ -1,3 +1,23 @@
+## API Endpoints
+- /products
+fetch all products
+
+API Params/Queries
+  - (Query) search : string
+  fetch product(s) with matching string
+
+  - (Query) page : number
+  fetch product(s) by page number 
+
+  - (Query) priceRange : 'chp' | 'nrm' | 'xps'
+  fetch product(s) by price range 
+
+  - (Query) available : boolean
+  fetch product(s) by stock availability
+
+  - (Param) id : number
+  fetch product with given id
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
