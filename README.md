@@ -5,18 +5,33 @@ fetch all products
 API Params/Queries
   - (Query) search : string
   fetch product(s) with matching string
+  ```
+  http://localhost:3000/products?search=bread
+  ```
 
   - (Query) page : number
   fetch product(s) by page number 
+  ```
+  http://localhost:3000/products?page=12
+  ```
 
   - (Query) priceRange : 'chp' | 'nrm' | 'xps'
   fetch product(s) by price range 
+  ```
+  http://localhost:3000/products?priceRange=xps
+  ```
 
   - (Query) available : boolean
   fetch product(s) by stock availability
+  ```
+  http://localhost:3000/products?available=true
+  ```
 
   - (Param) id : number
   fetch product with given id
+  ```
+  http://localhost:3000/products/1
+  ```
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
