@@ -3,31 +3,31 @@
 fetch all products
 
 API Params/Queries
-  - (Query) search : string
+  - (Query) search : string <br>
   fetch product(s) with matching string
   ```
   http://localhost:3000/products?search=bread
   ```
 
-  - (Query) page : number
+  - (Query) page : number <br>
   fetch product(s) by page number 
   ```
   http://localhost:3000/products?page=12
   ```
 
-  - (Query) priceRange : 'chp' | 'nrm' | 'xps'
+  - (Query) priceRange : 'chp' | 'nrm' | 'xps' <br>
   fetch product(s) by price range 
   ```
   http://localhost:3000/products?priceRange=xps
   ```
 
-  - (Query) available : boolean
+  - (Query) available : boolean <br>
   fetch product(s) by stock availability
   ```
   http://localhost:3000/products?available=true
   ```
 
-  - (Param) id : number
+  - (Param) id : number <br>
   fetch product with given id
   ```
   http://localhost:3000/products/1
